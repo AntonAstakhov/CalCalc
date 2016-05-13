@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <locale>
+#include <vector>
 using namespace std;
 
 struct table{
@@ -18,9 +19,10 @@ struct table{
   int calories;
 };
 
-void calSearch(string query){
+vector <table> calSearch(string query){
   int counterFound=0;
   locale loc;
+  vector <table> searchResult;
   table calTable[962];
   calTable[	1	].product="	1000 Island, Salad Dressing,Local	,	1 Tbsp	";
   calTable[	2	].product="	1000 Island, Salad Dressing,Reglr	,	1 Tbsp	";
@@ -1949,12 +1951,14 @@ void calSearch(string query){
       }
       if(currentString.find(query)!=string::npos){
           cout<<calTable[i].product<<" has "<<calTable[i].calories<<" calories"<<endl;
+          searchResult.push_back(calTable[i]);
           counterFound++;
     }
+    
   }
   if(counterFound==0) cout<<"Your request was not found( "<<endl;
+  return searchResult;
 }
-
 int main(int argc, const char * argv[])
 {
     string input;
@@ -2094,11 +2098,20 @@ int main(int argc, const char * argv[])
                 else if (user_choice == 2)
                 {
                     while (true) {
+                        vector <table> foodTable;
                         cout << "Enter food"<< endl;
                         cin >> food;
-                        calSearch(food);
+                        foodTable=calSearch(food);
+                            cout<<"We found "<<foodTable.size()<<" results which match your request, please enter your requested food number out of the following list: "<<endl;
+                            for(int i=0; i<foodTable.size(); i++){
+                                cout<<i+1<<". "<<foodTable[i].product<<endl;
+                            }
+                            int requestID;
+                            cin>>requestID;
+                            cout<<foodTable[requestID].product<<" contains "<<foodTable[requestID].calories<<" calories"<<endl;
+
                         int user_choice2 = 0;
-                        cout << "1 - enter food, 2 - exit" << endl;
+                        cout << "1 - Seaching for something else? Enter your request, 2 - exit" << endl;
                         cin >> user_choice2;
                         if (user_choice2 == 1) {
                             ;
